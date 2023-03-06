@@ -8,6 +8,7 @@ namespace DefaultNamespace
     {
         [SerializeField] private LoginPanel loginPanel;
         [SerializeField] private AccountPanel accountPanel;
+        [SerializeField] private RegistrationPanel registrationPanel;
 
         private AbstractPanel _currentPanel;
 
@@ -20,18 +21,26 @@ namespace DefaultNamespace
         {
             //Login Panel
             loginPanel.OnLoginComplete += OnLoginComplete;
+            loginPanel.OnRegistrationButtonClick += OnRegistrationButtonClick;
 
             //Account Panel
             accountPanel.OnLogOut += OnAccountLogOut;
+
+            //Registration panel
+            registrationPanel.OnRegistrationComplete += OnRegistrationComplete;
         }
 
         private void OnDisable()
         {
             //Login Panel
             loginPanel.OnLoginComplete -= OnLoginComplete;
+            loginPanel.OnRegistrationButtonClick -= OnRegistrationButtonClick;
 
             //Account Panel
             accountPanel.OnLogOut -= OnAccountLogOut;
+
+            //Registration panel
+            registrationPanel.OnRegistrationComplete -= OnRegistrationComplete;
         }
 
         private void Run()
@@ -61,6 +70,13 @@ namespace DefaultNamespace
             SetCurrent(accountPanel);
         }
 
+        private void ShowRegistrationPanel()
+        {
+            HidePrevious();
+            registrationPanel.Show();
+            SetCurrent(registrationPanel);
+        }
+
         private void OnLoginComplete(bool success)
         {
             if (success)
@@ -70,6 +86,22 @@ namespace DefaultNamespace
                 return;
             }
 
+
+            Debug.LogError("Invalid credentials");
+        }
+
+        private void OnRegistrationButtonClick()
+        {
+            ShowRegistrationPanel();
+        }
+
+        private void OnRegistrationComplete(bool success)
+        {
+            if (success)
+            {
+                ShowLoginPanel();
+                return;
+            }
 
             Debug.LogError("Invalid credentials");
         }

@@ -11,20 +11,19 @@ public class LoginPanel : AbstractPanel
     [SerializeField] private TMP_InputField usernameInputField;
     [SerializeField] private TMP_InputField passwordInputField;
     [SerializeField] private Button loginButton;
+    [SerializeField] private Button registrationButton;
 
     public event LoginCompleteDelegate OnLoginComplete;
+    public event Action OnRegistrationButtonClick;
     
     private void OnEnable()
     {
-        usernameInputField.onValueChanged.AddListener(OnUserNameValueChanged);
-        passwordInputField.onValueChanged.AddListener(OnPasswordValueChanged);
         loginButton.onClick.AddListener(OnLoginButtonClicked);
+        registrationButton.onClick.AddListener(OnRegistrationButtonClicked);
     }
 
     private void OnDisable()
     {
-        usernameInputField.onValueChanged.RemoveListener(OnUserNameValueChanged);
-        passwordInputField.onValueChanged.RemoveListener(OnPasswordValueChanged);
         loginButton.onClick.RemoveListener(OnLoginButtonClicked);
     }
 
@@ -46,11 +45,8 @@ public class LoginPanel : AbstractPanel
         }
     }
 
-    private void OnUserNameValueChanged(string value)
+    private void OnRegistrationButtonClicked()
     {
-    }
-
-    private void OnPasswordValueChanged(string value)
-    {
+        OnRegistrationButtonClick?.Invoke();
     }
 }
